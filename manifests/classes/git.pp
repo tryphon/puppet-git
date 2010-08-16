@@ -34,6 +34,17 @@ class git {
       mode => 755,
       require => Exec["git-init-$name"]
     }
+
+    # Used to manage several post-receive scripts
+    file { "/srv/git/$name/hooks/post-receive": 
+      source => "puppet:///git/run-post-receive.d",
+      mode => 755,
+      require => Exec["git-init-$name"]
+    }
+    file { "/srv/git/$name/hooks/post-receive.d": 
+      ensure => directory,
+      require => Exec["git-init-$name"]
+    }
   }
 
 }
@@ -69,6 +80,7 @@ class git::web {
 }
 
 class git::daemon {
+
   file { "/etc/init.d/git-daemon":
     source => "puppet:///git/git-daemon.initd",
     mode => 755
