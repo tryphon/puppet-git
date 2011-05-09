@@ -1,9 +1,17 @@
 class git::common {
 
   package { git-core: 
-    alias => git
+    alias => git,
+    ensure => latest
   }
 
+  include apt::backports
+
+  apt::preferences { "git":
+    package => "git", 
+    pin => "release a=lenny-backports",
+    priority => 999
+  }
 }
 
 class git {
@@ -80,7 +88,6 @@ class git::web {
 }
 
 class git::daemon {
-
   file { "/etc/init.d/git-daemon":
     source => "puppet:///git/git-daemon.initd",
     mode => 755
