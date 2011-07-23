@@ -21,7 +21,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/lib/git-core
 DESC="git-daemon service"
 NAME=git-daemon
-DAEMON=/usr/bin/$NAME
+DAEMON=/usr/bin/git
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
@@ -44,7 +44,7 @@ then
   ADVANCED_OPTS="--base-path=$REPOSITORIES $REPOSITORIES"
 fi
 
-DAEMON_ARGS="--syslog --reuseaddr \
+DAEMON_ARGS="daemon --syslog --reuseaddr \
              --user=$USER --group=$GROUP \
              $ADVANCED_OPTS"
 
