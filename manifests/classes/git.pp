@@ -5,12 +5,14 @@ class git::common {
     ensure => latest
   }
 
-  include apt::backports
-
-  apt::preferences { "git":
-    package => "git", 
-    pin => "release a=lenny-backports",
-    priority => 999
+  if $debian::lenny {
+    include apt::backports
+    apt::preferences { "git":
+      package => "git", 
+      pin => "release a=lenny-backports",
+      priority => 999,
+      before => Package[git-core]
+    }
   }
 }
 
