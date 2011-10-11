@@ -1,3 +1,6 @@
 #!/bin/bash
+
+exec > >(logger -t "git-cron") 2>&1 
+
 umask 002 
-/bin/ls /srv/git/*/.git | xargs -i --verbose git --git-dir={} gc
+/bin/ls -d /srv/git/* | xargs -i --verbose git --git-dir={} gc
