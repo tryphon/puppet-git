@@ -66,6 +66,15 @@ class git::storage {
     mode => 2755,
     group => src
   }
+
+  file { "/usr/local/sbin/git-cron":
+    source => "puppet:///git/git-cron",
+    mode => 755
+  }
+  file { "/etc/cron.daily/git-cron":
+    ensure => "/usr/local/sbin/git-cron",
+    require => File["/usr/local/sbin/git-cron"]
+  }
 }
 
 class git::web {

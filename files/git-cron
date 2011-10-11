@@ -1,0 +1,3 @@
+#!/bin/bash
+umask 002 
+/bin/ls /srv/git/*/.git | xargs -i --verbose git --git-dir={} gc
