@@ -17,7 +17,7 @@ class git {
       content => "$name"
     }
     exec { "git-init-$name":
-      command => "git --bare init --shared && git-update-server-info && chgrp -R src /srv/git/$name && chmod -R g+w /srv/git/$name",
+      command => "git --bare init --shared && git update-server-info && chgrp -R src /srv/git/$name && chmod -R g+w /srv/git/$name",
       cwd => "/srv/git/$name",
       creates => "/srv/git/$name/HEAD",
       require => Package[git]
