@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -d /srv/git ] || exit 0
+
 exec > >(logger -t "git-cron") 2>&1 
 
 umask 002 
