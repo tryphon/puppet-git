@@ -2,7 +2,11 @@
 
 [ -d /srv/git ] || exit 0
 
-exec > >(logger -t "git-cron") 2>&1 
+exec > >(logger -t "git-cron") 2>&1
 
-umask 002 
-/bin/ls -d /srv/git/* | xargs -i --verbose git --git-dir={} gc
+umask 002
+
+for repository in `find /srv/git -maxdepth 1 -mindepth 1 -type d`; do
+  user=`stat -c '%U' $repository`
+  su $user -c "git --git-dir=$repository gc --quiet"
+done
