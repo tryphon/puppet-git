@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 input=$(cat)
 scripts_directory="`dirname $0`/post-receive.d"

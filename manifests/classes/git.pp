@@ -1,19 +1,3 @@
-class git::common {
-
-  package { git-core: 
-    alias => git,
-    ensure => latest
-  }
-
-  include apt::backports
-
-  apt::preferences { "git":
-    package => "git", 
-    pin => "release a=lenny-backports",
-    priority => 999
-  }
-}
-
 class git {
   include git::common
   include git::storage
@@ -33,7 +17,7 @@ class git {
       content => "$name"
     }
     exec { "git-init-$name":
-      command => "git --bare init --shared && git-update-server-info && chgrp -R src /srv/git/$name && chmod -R g+w /srv/git/$name",
+      command => "git --bare init --shared && git update-server-info && chgrp -R src /srv/git/$name && chmod -R g+w /srv/git/$name",
       cwd => "/srv/git/$name",
       creates => "/srv/git/$name/HEAD",
       require => Package[git]
@@ -64,26 +48,14 @@ class git::storage {
     mode => 2755,
     group => src
   }
-}
 
-class git::web {
-  include apache2
-
-  package { gitweb: }
-
-  file { "/etc/git": 
-    ensure => directory
+  file { "/usr/local/sbin/git-cron":
+    source => "puppet:///git/git-cron",
+    mode => 755
   }
-
-  file { "/etc/git/gitweb.conf": 
-    source => "puppet:///git/gitweb.conf"
-  }
-  file { "/etc/gitweb.conf":
-    ensure => "/etc/git/gitweb.conf",
-  }
-
-  apache2::confd_file { git:
-    source => "puppet:///git/apache2.conf"
+  file { "/etc/cron.daily/git-cron":
+    ensure => "/usr/local/sbin/git-cron",
+    require => File["/usr/local/sbin/git-cron"]
   }
 }
 
