@@ -29,7 +29,7 @@ class git {
 
     # Used to manage several post-receive scripts
     file { "/srv/git/$name/hooks/post-receive": 
-      source => "puppet:///git/run-post-receive.d",
+      source => "puppet:///modules/git/run-post-receive.d",
       mode => 755,
       require => Exec["git-init-$name"]
     }
@@ -50,7 +50,7 @@ class git::storage {
   }
 
   file { "/usr/local/sbin/git-cron":
-    source => "puppet:///git/git-cron",
+    source => "puppet:///modules/git/git-cron",
     mode => 755
   }
   file { "/etc/cron.daily/git-cron":
@@ -61,12 +61,12 @@ class git::storage {
 
 class git::daemon {
   file { "/etc/init.d/git-daemon":
-    source => "puppet:///git/git-daemon.initd",
+    source => "puppet:///modules/git/git-daemon.initd",
     mode => 755
   }
 
   file { "/etc/default/git-daemon":
-    source => "puppet:///git/git-daemon.default",
+    source => "puppet:///modules/git/git-daemon.default",
     notify => Service["git-daemon"]
   }
 
